@@ -1,7 +1,5 @@
 using SharedNavigation.NETStandard;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SharedNavigation.Sample.NETCore

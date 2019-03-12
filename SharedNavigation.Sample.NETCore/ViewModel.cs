@@ -1,7 +1,4 @@
 using SharedNavigation.NETStandard;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SharedNavigation.Sample.NETCore
 {
