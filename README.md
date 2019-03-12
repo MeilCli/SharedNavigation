@@ -1,5 +1,5 @@
 # SharedNavigation
-[理想のMVVM Navigatorを目指した前作(未完成)](https://github.com/MeilCli/Kamihikouki)より理想的なMVVM Navigator目指すリポジトリ
+[理想のMVVM Navigatorを目指した前作(未完成)](https://github.com/MeilCli/Kamihikouki)より理想的なMVVM Navigator作成を目指すリポジトリ
 
 ## 設計
 Fodyを使いコンパイル時にNavigator関連のCILを埋め込む
