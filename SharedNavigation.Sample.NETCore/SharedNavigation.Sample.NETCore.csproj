@@ -6,11 +6,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fody" Version="3.3.3">
+        <PackageReference Include="Fody" Version="4.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="SharedNavigation.NETStandard.Fody" Version="0.0.0.47" />
+        <PackageReference Include="SharedNavigation.NETStandard.Fody" Version="0.0.0.48" />
     </ItemGroup>
 
 </Project>

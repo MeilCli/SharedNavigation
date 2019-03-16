@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
         <PackageId>SharedNavigation.NETStandard.Fody</PackageId>
-        <Version>0.0.0.47</Version>
+        <Version>0.0.0.48</Version>
         <Authors>meilcli</Authors>
         <Company />
         <PackageLicenseUrl />
@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fody" Version="3.3.3" PrivateAssets="None" />
-        <PackageReference Include="FodyPackaging" Version="3.3.3" PrivateAssets="All" />
+        <PackageReference Include="Fody" Version="4.0.2" PrivateAssets="None" />
+        <PackageReference Include="FodyPackaging" Version="4.0.2" PrivateAssets="All" />
     </ItemGroup>
 </Project>
