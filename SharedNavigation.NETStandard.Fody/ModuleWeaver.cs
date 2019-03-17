@@ -23,19 +23,37 @@ namespace SharedNavigation.NETStandard.Fody
 
         public override void Execute()
         {
-            foreach (TypeDefinition navigationView in findNavigationView())
+            var navigationFinder = new NavigationFinder(this);
+
+            foreach (var navigationViewDefinition in navigationFinder.FindNavigationViewDefinitions())
             {
-                LogInfo("SNNF navigationView found");
-                var navigateMethods = findNavigateMethod(navigationView).ToList();
-                var canNavigateMethods = findCanNavigateMethod(navigationView).ToList();
+                logNavigationViewDefinition(navigationViewDefinition);
 
-                LogInfo($"SNNF navigateMethodCount: {navigateMethods.Count}");
-
-                var navigationActions = navigateMethods
-                    .Select((x, i) => (type: createNavigationAction(navigationView, x.method, null, i), name: x.injectPropertyName))
+                var navigationActions = navigationViewDefinition
+                    .NavigationActionDefinitions
+                    .Select((x, i) => (
+                        type: createNavigationAction(
+                            navigationViewDefinition.NavigationViewType,
+                            x.NavigateMethod,
+                            x.CanNavigateMethod,
+                            i),
+                        name: x.InjectPropertyName)
+                    )
                     .ToList();
 
-                applyRegisterNavigation(navigationView, navigationActions);
+                applyRegisterNavigation(navigationViewDefinition.NavigationViewType, navigationActions);
+            }
+        }
+
+        private void logNavigationViewDefinition(NavigationViewDefinition navigationViewDefinition)
+        {
+            LogInfo($"{Constant.Tag}: navigation view: {navigationViewDefinition.NavigationViewType.FullName}");
+
+            foreach (var navigationActionDefinition in navigationViewDefinition.NavigationActionDefinitions)
+            {
+                LogInfo($"{Constant.Tag}: navigation action: property: {navigationActionDefinition.InjectPropertyName}, " +
+                    $"navigate: {navigationActionDefinition.NavigateMethod?.Name ?? "undefined"}, " +
+                    $"can navigate: {navigationActionDefinition.CanNavigateMethod?.Name ?? "undefined"}");
             }
         }
     }

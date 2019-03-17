@@ -32,14 +32,21 @@ namespace SharedNavigation.NETStandard.Fody
 
             FieldDefinition viewField = addNavigationViewField(navigationAction, navigationView);
             addNavigationViewConstructor(navigationAction, navigationView, viewField);
-            addNavigateAsync(navigationAction, navigationView, navigateMethod, viewField);
-            if (canNavigateMethod != null)
+            if (navigateMethod != null)
             {
-                addCanNavigateIfDefined(navigationAction, navigationView, canNavigateMethod, viewField);
+                addNavigateAsyncIfDefined(navigationAction, navigateMethod, viewField);
             }
             else
             {
-                addCanNavigateIfNotDefined(navigationAction, navigationView);
+                addNavigateAsyncIfNotDefined(navigationAction);
+            }
+            if (canNavigateMethod != null)
+            {
+                addCanNavigateIfDefined(navigationAction, canNavigateMethod, viewField);
+            }
+            else
+            {
+                addCanNavigateIfNotDefined(navigationAction);
             }
 
             navigationView.NestedTypes.Add(navigationAction);
@@ -84,9 +91,33 @@ namespace SharedNavigation.NETStandard.Fody
             navigationAction.Methods.Add(method);
         }
 
-        private void addNavigateAsync(
+        private void addNavigateAsyncIfNotDefined(TypeDefinition navigationAction)
+        {
+            var method = new MethodDefinition(
+                Constant.NavigationActionNavigateAsyncName,
+                MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual,
+                ModuleDefinition.ImportReference(FindType($"{Constant.SystemThreadingTasksNameSpace}.{nameof(Task)}"))
+            );
+
+            var genericParameter = new GenericParameter("T", method);
+            genericParameter.HasDefaultConstructorConstraint = true;
+            genericParameter.Constraints.Add(ModuleDefinition.ImportReference(FindType(Constant.NavigationViewModelInterfaceFullName)));
+            method.GenericParameters.Add(genericParameter);
+
+            var parameter = new ParameterDefinition(genericParameter);
+            method.Parameters.Add(parameter);
+
+            ILProcessor processor = method.Body.GetILProcessor();
+
+            TypeReference taskReference = ModuleDefinition.ImportReference(FindType($"{Constant.SystemThreadingTasksNameSpace}.{nameof(Task)}"));
+            processor.Append(processor.Create(OpCodes.Call, new MethodReference("get_CompletedTask", taskReference, taskReference)));
+            processor.Append(processor.Create(OpCodes.Ret));
+
+            navigationAction.Methods.Add(method);
+        }
+
+        private void addNavigateAsyncIfDefined(
             TypeDefinition navigationAction,
-            TypeDefinition navigationView,
             MethodDefinition navigateMethod,
             FieldDefinition viewField)
         {
@@ -141,9 +172,7 @@ namespace SharedNavigation.NETStandard.Fody
             navigationAction.Methods.Add(method);
         }
 
-        private void addCanNavigateIfNotDefined(
-            TypeDefinition navigationAction,
-            TypeDefinition navigationView)
+        private void addCanNavigateIfNotDefined(TypeDefinition navigationAction)
         {
             var method = new MethodDefinition(
                 Constant.NavigationActionCanNavigateName,
@@ -169,7 +198,6 @@ namespace SharedNavigation.NETStandard.Fody
 
         private void addCanNavigateIfDefined(
             TypeDefinition navigationAction,
-            TypeDefinition navigationView,
             MethodDefinition canNavigateMethod,
             FieldDefinition viewField)
         {
