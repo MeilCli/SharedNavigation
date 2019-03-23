@@ -13,7 +13,12 @@ namespace SharedNavigation.NETStandard.Test
         static WeaverTest()
         {
             var weavingTask = new ModuleWeaver();
-            TestResult = weavingTask.ExecuteTestRun("SharedNavigation.NETStandard.Test.Assembly.dll", false);
+            TestResult = weavingTask.ExecuteTestRun(
+                assemblyPath: "SharedNavigation.NETStandard.Test.Assembly.dll",
+                // if true: run peverify, but it throw "The files have difference peverify results." because output path is different.
+                runPeVerify: false,
+                ignoreCodes: new[] { "0x80131869" }
+            );
         }
     }
 }
