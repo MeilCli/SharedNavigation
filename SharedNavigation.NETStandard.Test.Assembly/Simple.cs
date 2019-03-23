@@ -10,9 +10,9 @@ namespace SharedNavigation.NETStandard.Test.Assembly
         public bool IsPushAsyncCalled { get; set; }
 
         [Navigate(nameof(SimpleViewModel.PushCommand))]
-        public static async Task PushAsync(SimpleViewModel viewModel)
+        public async Task PushAsync(SimpleViewModel viewModel)
         {
-            //IsPushAsyncCalled = true;
+            IsPushAsyncCalled = true;
             await Task.CompletedTask;
         }
 
