@@ -25,6 +25,11 @@ namespace SharedNavigation.NETStandard.Fody
             return type.FullName == attributeSpec.FullName;
         }
 
+        public static bool MatchMethod(this MethodReference method, Constant.MethodSpec methodSpec)
+        {
+            return method.Name == methodSpec.Name;
+        }
+
         public static void AddRange<T>(this HashSet<T> hashSet, IEnumerable<T> elements)
         {
             foreach (var element in elements)

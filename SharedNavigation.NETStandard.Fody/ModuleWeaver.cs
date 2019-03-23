@@ -37,11 +37,15 @@ namespace SharedNavigation.NETStandard.Fody
                             x.NavigateMethod,
                             x.CanNavigateMethod,
                             i),
-                        name: x.InjectPropertyName)
+                        property: x.InjectProperty)
                     )
                     .ToList();
 
-                applyRegisterNavigation(navigationViewDefinition.NavigationViewType, navigationActions);
+                applyRegisterNavigation(
+                    navigationViewDefinition.NavigationViewType,
+                    navigationViewDefinition.RegisterNavigationMethod,
+                    navigationActions
+                );
             }
         }
 

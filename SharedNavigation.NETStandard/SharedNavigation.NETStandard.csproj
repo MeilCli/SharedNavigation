@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
         <PackageId>SharedNavigation.NETStandard.Fody</PackageId>
-        <Version>0.0.0.48</Version>
+        <Version>0.0.0.49</Version>
         <Authors>meilcli</Authors>
         <Company />
         <PackageLicenseUrl />
